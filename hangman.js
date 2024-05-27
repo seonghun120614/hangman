@@ -2,6 +2,56 @@ var word = "SCIENCE";
 var life = 6;
 var correctNum = 0;
 
+const drawHangmanFunctions = {
+  0: function drawHead(ctx, strStyle) {
+    // Draw Head
+    ctx.strokeStyle = strStyle;
+    ctx.beginPath();
+    ctx.arc(150, 50, 10, 0, Math.PI * 2, true);
+    ctx.stroke();
+  },
+  1: function drawBody(ctx, strStyle) {
+    // Body
+    ctx.strokeStyle = strStyle;
+    ctx.beginPath();
+    ctx.moveTo(150, 60);
+    ctx.lineTo(150, 90);
+    ctx.stroke();
+  },
+  2: function drawLeftArm(ctx, strStyle) {
+    // Left Arm
+    ctx.strokeStyle = strStyle;
+    ctx.beginPath();
+    ctx.moveTo(150, 60);
+    ctx.lineTo(130, 80);
+    ctx.stroke();
+  },
+  3: function drawRightArm(ctx, strStyle) {
+    // Right Arm
+    ctx.strokeStyle = strStyle;
+    ctx.beginPath();
+    ctx.moveTo(150, 60);
+    ctx.lineTo(170, 80);
+    ctx.stroke();
+  },
+  4: function drawLeftLeg(ctx, strStyle) {
+    // Left Leg
+    ctx.strokeStyle = strStyle;
+    ctx.beginPath();
+    ctx.moveTo(150, 90);
+    ctx.lineTo(130, 110);
+    ctx.stroke();
+  },
+  5: function drawRightLeg(ctx, strStyle) {
+    // Roght Leg
+    ctx.strokeStyle = strStyle;
+    ctx.beginPath();
+    ctx.moveTo(150, 90);
+    ctx.lineTo(170, 110);
+    ctx.stroke();
+  }
+};
+
 /**
  * Initialization
  */
@@ -24,7 +74,7 @@ function initialize() {
     lettersDiv.appendChild(letterElement);
   }
 
-  drawHangMan();
+  initialDraw();
   setWord();
 }
 
@@ -46,37 +96,31 @@ function setWord() {
  * About Canvas Tool
  */
 
-function drawHangMan() {
+function initialDraw() {
   /**
    * Draw all hangman feature
    */
   const canvas = document.getElementById('hangman_canvas');
   const ctx = canvas.getContext('2d');
+  const lineColor = 'black';
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.lineWidth = 2;
   ctx.strokeStyle = 'black';
 
-  ctx.beginPath();
-  ctx.moveTo(10, 130);
-  ctx.lineTo(130, 130);
-  ctx.stroke();
-
-  drawHanger(ctx);
-  drawHead(ctx);
-  drawBody(ctx);
-  drawLeftArm(ctx);
-  drawRightArm(ctx);
-  drawLeftLeg(ctx);
-  drawRightLeg(ctx);
+  drawHanger(ctx, lineColor);
+  for (i = 0; i < 6; i++)
+    drawHangmanFunctions[i](ctx, lineColor);
 }
 
-function drawHanger(ctx) {
+function drawHanger(ctx, strStyle) {
   /**
    * Draw Hanger which contains
    * floor, pillar, and rope.
    */
   // Floor
+  ctx.strokeStyle = strStyle;
+
   ctx.beginPath();
   ctx.moveTo(10, 130);
   ctx.lineTo(130, 130);
@@ -96,47 +140,7 @@ function drawHanger(ctx) {
   ctx.lineTo(150, 40);
   ctx.stroke();
 }
-function drawHead(ctx) {
-  // Draw Head
-  ctx.beginPath();
-  ctx.arc(150, 50, 10, 0, Math.PI * 2, true);
-  ctx.stroke();
-}
-function drawBody(ctx) {
-  // Body
-  ctx.beginPath();
-  ctx.moveTo(150, 60);
-  ctx.lineTo(150, 90);
-  ctx.stroke();
-}
-function drawLeftArm(ctx) {
-  // Left Arm
-  ctx.beginPath();
-  ctx.moveTo(150, 60);
-  ctx.lineTo(130, 80);
-  ctx.stroke();
-}
-function drawRightArm(ctx) {
-  // Right Arm
-  ctx.beginPath();
-  ctx.moveTo(150, 60);
-  ctx.lineTo(170, 80);
-  ctx.stroke();
-}
-function drawLeftLeg(ctx) {
-  // Left Leg
-  ctx.beginPath();
-  ctx.moveTo(150, 90);
-  ctx.lineTo(130, 110);
-  ctx.stroke();
-}
-function drawRightLeg(ctx) {
-  // Roght Leg
-  ctx.beginPath();
-  ctx.moveTo(150, 90);
-  ctx.lineTo(170, 110);
-  ctx.stroke();
-}
+
 
 /**
  * Client-Server Methods
