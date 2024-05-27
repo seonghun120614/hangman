@@ -211,12 +211,16 @@ function response(character) {
 }
 
 function correct(letter, character) {
+  /**
+   * Logic for correct answer
+   */
   handleModal.on("Correct!");
 
   const words = document.getElementById('word');
   let index = word.search(character);
 
   while (index !== -1) {
+    // Replace for avoid duplicated logic
     word = word.replace(character, "\0");
 
     const correctPos = words.querySelector(`#word > div:nth-child(${index+2})`);
@@ -230,6 +234,9 @@ function correct(letter, character) {
 }
 
 function wrong(letterNode) {
+  /**
+   * Logic for wrong answer
+   */
   handleModal.on("Wrong...");
 
   letterNode.classList.add('wrong');
@@ -253,6 +260,7 @@ function termination(isNormalTermination) {
   }
 
   document.querySelectorAll('.letters').forEach(letter => {
+    // Showing Answer
     if (
       !letter.classList.contains('wrong') && 
       !letter.classList.contains('correct')) {
@@ -262,6 +270,8 @@ function termination(isNormalTermination) {
           letter.classList.add("wrong");
         }
     }
+
+    // Disable onClick events
     letter.removeAttribute('onclick');
     handleModal.terminate();
   });
