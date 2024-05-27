@@ -53,7 +53,7 @@ const drawHangmanFunctions = {
 };
 
 /**
- * Initialization
+ * Start Game
  */
 
 function initialize() {
@@ -78,24 +78,6 @@ function initialize() {
   setWord();
 }
 
-function setWord() {
-  /**
-   * Setup answer
-   */
-  const divWord = document.getElementById("word");
-  
-  for (i = 0; i < word.length; i++) {
-    const newDiv = document.createElement('div');
-    newDiv.classList.add('blank');
-    divWord.appendChild(newDiv);
-  }
-}
-
-
-/**
- * About Canvas Tool
- */
-
 function initialDraw() {
   /**
    * Draw all hangman feature
@@ -111,6 +93,19 @@ function initialDraw() {
   drawHanger(ctx, lineColor);
   for (i = 0; i < 6; i++)
     drawHangmanFunctions[i](ctx, lineColor);
+}
+
+function setWord() {
+  /**
+   * Setup answer
+   */
+  const divWord = document.getElementById("word");
+  
+  for (i = 0; i < word.length; i++) {
+    const newDiv = document.createElement('div');
+    newDiv.classList.add('blank');
+    divWord.appendChild(newDiv);
+  }
 }
 
 function drawHanger(ctx, strStyle) {
@@ -143,26 +138,37 @@ function drawHanger(ctx, strStyle) {
 
 
 /**
- * Client-Server Methods
+ * Logic Functions
  */
 
 function response(character) {
   /**
    * React for user input or click
    */
-  let index = word.search(character);
   const letters = document.getElementById('letters');
   const letter = letters.childNodes[character.charCodeAt() - 64];
-  const words = document.getElementById('word');
 
   letter.removeAttribute('onclick');
 
-  if (index === -1) {
-    alert("Wrong!");
-    letter.classList.add('wrong');
-    life--;
+  if (word.search(character) === -1) {
+    wrong(letter);
+
+    if (life === 0)
+      termination(life);
     return;
   }
+
+  open(letter, character);
+  
+  if (correctNum === word.length)
+    termination(life);
+}
+
+function open(letter, character) {
+  alert('Correct!'+correctNum);
+
+  const words = document.getElementById('word');
+  let index = word.search(character);
 
   while (index !== -1) {
     word = word.replace(character, "\0");
@@ -175,16 +181,35 @@ function response(character) {
 
     correctNum++;
   }
-
-  alert('Correct!'+correctNum);
-  if (life === 0) {
-    alert('You loose...');
-  }
-  if (correctNum === word.length) {
-    alert('You Won!');
-  }
 }
 
+function wrong(letterNode) {
+  alert("Wrong!");
+
+  letterNode.classList.add('wrong');
+  life--;
+  drawHangmanFunctions[life](
+    document.getElementById('hangman_canvas').getContext('2d'),
+    'cornflowerblue'
+  );
+}
+
+
+/**
+ * End Game
+ */
+
+function termination(isNormalTermination) {
+  if (isNormalTermination === 0) {
+    alert('You loose...');
+  } else {
+    alert('You Won!');
+  }
+
+  document.querySelectorAll('.letters').forEach(letterElement => {
+    letterElement.removeEventListener('click', yourClickHandlerFunction);
+  });
+}
 
 /**
  * Rendering
