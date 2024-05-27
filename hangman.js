@@ -1,5 +1,10 @@
-var correctWord = 'science';
+var word = "SCIENCE";
+var life = 6;
+var correctNum = 0;
 
+/**
+ * Initialization
+ */
 
 function initialize() {
   /**
@@ -14,13 +19,37 @@ function initialize() {
 
     letterElement.textContent = letter;
     letterElement.classList.add('letters');
+    letterElement.setAttribute('onclick', `response("${letter}")`);
+
     lettersDiv.appendChild(letterElement);
   }
 
   drawHangMan();
+  setWord();
 }
 
+function setWord() {
+  /**
+   * Setup answer
+   */
+  const divWord = document.getElementById("word");
+  
+  for (i = 0; i < word.length; i++) {
+    const newDiv = document.createElement('div');
+    newDiv.classList.add('blank');
+    divWord.appendChild(newDiv);
+  }
+}
+
+
+/**
+ * About Canvas Tool
+ */
+
 function drawHangMan() {
+  /**
+   * Draw all hangman feature
+   */
   const canvas = document.getElementById('hangman_canvas');
   const ctx = canvas.getContext('2d');
 
@@ -67,14 +96,12 @@ function drawHanger(ctx) {
   ctx.lineTo(150, 40);
   ctx.stroke();
 }
-
 function drawHead(ctx) {
   // Draw Head
   ctx.beginPath();
   ctx.arc(150, 50, 10, 0, Math.PI * 2, true);
   ctx.stroke();
 }
-
 function drawBody(ctx) {
   // Body
   ctx.beginPath();
@@ -82,7 +109,6 @@ function drawBody(ctx) {
   ctx.lineTo(150, 90);
   ctx.stroke();
 }
-
 function drawLeftArm(ctx) {
   // Left Arm
   ctx.beginPath();
@@ -90,7 +116,6 @@ function drawLeftArm(ctx) {
   ctx.lineTo(130, 80);
   ctx.stroke();
 }
-
 function drawRightArm(ctx) {
   // Right Arm
   ctx.beginPath();
@@ -98,7 +123,6 @@ function drawRightArm(ctx) {
   ctx.lineTo(170, 80);
   ctx.stroke();
 }
-
 function drawLeftLeg(ctx) {
   // Left Leg
   ctx.beginPath();
@@ -106,7 +130,6 @@ function drawLeftLeg(ctx) {
   ctx.lineTo(130, 110);
   ctx.stroke();
 }
-
 function drawRightLeg(ctx) {
   // Roght Leg
   ctx.beginPath();
@@ -115,7 +138,52 @@ function drawRightLeg(ctx) {
   ctx.stroke();
 }
 
+/**
+ * Client-Server Methods
+ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  initialize();
-});
+function response(character) {
+  /**
+   * React for user input or click
+   */
+  let index = word.search(character);
+  const letters = document.getElementById('letters');
+  const letter = letters.childNodes[character.charCodeAt() - 64];
+  const words = document.getElementById('word');
+
+  letter.removeAttribute('onclick');
+
+  if (index === -1) {
+    alert("Wrong!");
+    letter.classList.add('wrong');
+    life--;
+    return;
+  }
+
+  while (index !== -1) {
+    word = word.replace(character, "\0");
+
+    const correctPos = words.querySelector(`#word > div:nth-child(${index+2})`);
+    correctPos.textContent = character;
+
+    letter.classList.add('correct');
+    index = word.search(character);
+
+    correctNum++;
+  }
+
+  alert('Correct!'+correctNum);
+  if (life === 0) {
+    alert('You loose...');
+  }
+  if (correctNum === word.length) {
+    alert('You Won!');
+  }
+}
+
+
+/**
+ * Rendering
+ */
+
+document.addEventListener('DOMContentLoaded', initialize);
