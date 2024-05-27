@@ -52,6 +52,39 @@ const drawHangmanFunctions = {
   }
 };
 
+const handleModal = {
+  modal: document.createElement('div'),
+  modalWindow: document.createElement('div'),
+
+  initialize: function() {
+    this.modal.classList.add('modal');
+    document.body.append(this.modal);
+  },
+
+  on: function (content) {
+    const modalWindow = document.createElement('div');
+    modalWindow.id = 'modalWindow';
+    modalWindow.style.display = 'absolute';
+    modalWindow.textContent = content;
+
+    this.modal.appendChild(modalWindow);
+    modalWindow.style.opacity = 1;
+
+    setTimeout(() => {
+      modalWindow.style.opacity = 0;
+      setTimeout(() => {
+        modalWindow.remove();
+      }, 300);
+    }, 1000);
+  },
+
+  terminate: function () {
+    this.modal.remove();
+  }
+};
+
+
+
 /**
  * Start Game
  */
@@ -76,6 +109,7 @@ function initialize() {
 
   initialDraw();
   setWord();
+  handleModal.initialize();
 }
 
 function initialDraw() {
@@ -165,7 +199,7 @@ function response(character) {
 }
 
 function correct(letter, character) {
-  alert('Correct!'+correctNum);
+  handleModal.on("Correct!");
 
   const words = document.getElementById('word');
   let index = word.search(character);
@@ -184,7 +218,7 @@ function correct(letter, character) {
 }
 
 function wrong(letterNode) {
-  alert("Wrong!");
+  handleModal.on("Wrong...");
 
   letterNode.classList.add('wrong');
   life--;
@@ -210,9 +244,14 @@ function termination(isNormalTermination) {
     if (
       !letter.classList.contains('wrong') && 
       !letter.classList.contains('correct')) {
-        letter.classList.add("wrong");
+        if (word.search(letter.innerHTML) !== -1) {
+          correct(letter, letter.innerHTML);
+        } else {
+          letter.classList.add("wrong");
+        }
     }
     letter.removeAttribute('onclick');
+    handleModal.terminate();
   });
 }
 
