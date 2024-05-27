@@ -158,13 +158,13 @@ function response(character) {
     return;
   }
 
-  open(letter, character);
+  correct(letter, character);
   
   if (correctNum === word.length)
     termination(life);
 }
 
-function open(letter, character) {
+function correct(letter, character) {
   alert('Correct!'+correctNum);
 
   const words = document.getElementById('word');
@@ -206,8 +206,13 @@ function termination(isNormalTermination) {
     alert('You Won!');
   }
 
-  document.querySelectorAll('.letters').forEach(letterElement => {
-    letterElement.removeEventListener('click', yourClickHandlerFunction);
+  document.querySelectorAll('.letters').forEach(letter => {
+    if (
+      !letter.classList.contains('wrong') && 
+      !letter.classList.contains('correct')) {
+        letter.classList.add("wrong");
+    }
+    letter.removeAttribute('onclick');
   });
 }
 
