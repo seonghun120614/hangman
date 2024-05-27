@@ -1,7 +1,7 @@
 #letters {
   border: 5px solid black;
   border-radius: 10px;
-  width: 500px;
+  width: 440px;
   height: 800px;
   display: flex;
   flex-wrap: wrap;
@@ -22,4 +22,22 @@
 .letters:hover {
   background-color: white;
   color: black;
+}
+
+#play_area {
+  width: 1000px;
+  height: 800px;
+  display: flex;
+}
+#hangman {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: cornflowerblue;
+  width: 400px;
+  height: 800px;
+}
+#hangman_canvas {
+  width: 400px;
+  height: 400px;
 }
