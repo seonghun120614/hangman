@@ -1,4 +1,16 @@
-var word = "SCIENCE";
+const vocabulary = {
+  0:"SCIENCE",
+  1:"MATHEMATICS",
+  2:"COMPUTER",
+  3:"HELLO",
+  4:"JAVASCRIPT",
+  5:"WEBPROGRAMMING",
+  get: function() {
+    return this[Math.floor(Math.random() * 6)]
+  }
+}
+
+var word = vocabulary.get();
 var life = 6;
 var correctNum = 0;
 
