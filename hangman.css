@@ -1,0 +1,25 @@
+#letters {
+  border: 5px solid black;
+  border-radius: 10px;
+  width: 500px;
+  height: 800px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.letters {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  font-size: 2em;
+  margin: 5px;
+}
+.letters:hover {
+  background-color: white;
+  color: black;
+}
